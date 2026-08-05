@@ -27,7 +27,7 @@ def main():
     # 2. Compile the C program
     print("🛠️  Compiling sender.c...")
     compile_res = subprocess.run(
-        ["gcc", "../get_readings.c", "../structs.c", "-o", "../get_readings"]
+        ["gcc", "get_readings.c", "structs.c", "-o", "get_readings"]
     )
     if compile_res.returncode != 0:
         print("❌ Compilation failed!")
@@ -36,7 +36,7 @@ def main():
     # 3. Start the Python Receiver in the background
     print("👂 Starting receiver.py in background...")
     # We use Popen so the script doesn't stop and wait for the receiver to finish
-    receiver_proc = subprocess.Popen(["python3", "__init__.py"])
+    receiver_proc = subprocess.Popen(["python3", "recv_readings.py"])
 
     # Give the receiver a second to wake up and bind to the port
     time.sleep(1)
@@ -44,7 +44,7 @@ def main():
     try:
         # 4. Run the C Sender, passing the IP as an argument
         print(f"📤 Sending data to {ip}...")
-        subprocess.run([".././get_readings", ip])
+        subprocess.run(["./get_readings", ip])
 
         # Give it a moment to finish sending before we shut down
         time.sleep(1)
