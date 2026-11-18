@@ -19,7 +19,7 @@ def get_local_ip():
     return IP
 
 
-def main():
+def main() -> None:
     # 1. Get the local IP
     ip = get_local_ip()
     print(f"🚀 Detected Local IP: {ip}")
@@ -44,7 +44,7 @@ def main():
     try:
         # 4. Run the C Sender, passing the IP as an argument
         print(f"📤 Sending data to {ip}...")
-        subprocess.run(["./get_readings", ip])
+        subprocess.run(["./get_readings", ip], check=True)
 
         # Give it a moment to finish sending before we shut down
         time.sleep(1)
@@ -55,6 +55,7 @@ def main():
         # 5. Clean up: Kill the receiver process
         print("\n🛑 Shutting down receiver...")
         receiver_proc.terminate()
+        receiver_proc.wait(timeout=5)
         print("Done!")
 
 
